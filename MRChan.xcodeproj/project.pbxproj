@@ -1,0 +1,422 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C5EBFDE01910900F001B3B43 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EBFDDF1910900F001B3B43 /* Cocoa.framework */; };
+		C5EBFDEA1910900F001B3B43 /* MRChan.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EBFDE91910900F001B3B43 /* MRChan.m */; };
+		C5EBFDF119109010001B3B43 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EBFDF019109010001B3B43 /* XCTest.framework */; };
+		C5EBFDF219109010001B3B43 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EBFDDF1910900F001B3B43 /* Cocoa.framework */; };
+		C5EBFDF519109010001B3B43 /* libMRChan.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EBFDDC1910900F001B3B43 /* libMRChan.a */; };
+		C5EBFDFB19109010001B3B43 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C5EBFDF919109010001B3B43 /* InfoPlist.strings */; };
+		C5EBFDFD19109010001B3B43 /* MRChanTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EBFDFC19109010001B3B43 /* MRChanTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C5EBFDF319109010001B3B43 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C5EBFDD41910900F001B3B43 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C5EBFDDB1910900F001B3B43;
+			remoteInfo = MRChan;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		C5EBFDDC1910900F001B3B43 /* libMRChan.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMRChan.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5EBFDDF1910900F001B3B43 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		C5EBFDE21910900F001B3B43 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C5EBFDE31910900F001B3B43 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		C5EBFDE41910900F001B3B43 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		C5EBFDE81910900F001B3B43 /* MRChan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRChan.h; sourceTree = "<group>"; };
+		C5EBFDE91910900F001B3B43 /* MRChan.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRChan.m; sourceTree = "<group>"; };
+		C5EBFDEF19109010001B3B43 /* MRChanTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MRChanTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5EBFDF019109010001B3B43 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		C5EBFDF819109010001B3B43 /* MRChanTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MRChanTests-Info.plist"; sourceTree = "<group>"; };
+		C5EBFDFA19109010001B3B43 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C5EBFDFC19109010001B3B43 /* MRChanTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRChanTests.m; sourceTree = "<group>"; };
+		C5EBFE0719109170001B3B43 /* MRChan-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MRChan-Prefix.pch"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C5EBFDD91910900F001B3B43 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C5EBFDE01910900F001B3B43 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C5EBFDEC19109010001B3B43 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C5EBFDF519109010001B3B43 /* libMRChan.a in Frameworks */,
+				C5EBFDF219109010001B3B43 /* Cocoa.framework in Frameworks */,
+				C5EBFDF119109010001B3B43 /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C5EBFDD31910900F001B3B43 = {
+			isa = PBXGroup;
+			children = (
+				C5EBFDE51910900F001B3B43 /* MRChan */,
+				C5EBFDF619109010001B3B43 /* MRChanTests */,
+				C5EBFDDE1910900F001B3B43 /* Frameworks */,
+				C5EBFDDD1910900F001B3B43 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C5EBFDDD1910900F001B3B43 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C5EBFDDC1910900F001B3B43 /* libMRChan.a */,
+				C5EBFDEF19109010001B3B43 /* MRChanTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C5EBFDDE1910900F001B3B43 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C5EBFDDF1910900F001B3B43 /* Cocoa.framework */,
+				C5EBFDF019109010001B3B43 /* XCTest.framework */,
+				C5EBFDE11910900F001B3B43 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C5EBFDE11910900F001B3B43 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C5EBFDE21910900F001B3B43 /* Foundation.framework */,
+				C5EBFDE31910900F001B3B43 /* CoreData.framework */,
+				C5EBFDE41910900F001B3B43 /* AppKit.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		C5EBFDE51910900F001B3B43 /* MRChan */ = {
+			isa = PBXGroup;
+			children = (
+				C5EBFDE81910900F001B3B43 /* MRChan.h */,
+				C5EBFDE91910900F001B3B43 /* MRChan.m */,
+				C5EBFE0619109141001B3B43 /* Supporting Files */,
+			);
+			path = MRChan;
+			sourceTree = "<group>";
+		};
+		C5EBFDF619109010001B3B43 /* MRChanTests */ = {
+			isa = PBXGroup;
+			children = (
+				C5EBFDFC19109010001B3B43 /* MRChanTests.m */,
+				C5EBFDF719109010001B3B43 /* Supporting Files */,
+			);
+			path = MRChanTests;
+			sourceTree = "<group>";
+		};
+		C5EBFDF719109010001B3B43 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C5EBFDF819109010001B3B43 /* MRChanTests-Info.plist */,
+				C5EBFDF919109010001B3B43 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C5EBFE0619109141001B3B43 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C5EBFE0719109170001B3B43 /* MRChan-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		C5EBFDDA1910900F001B3B43 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		C5EBFDDB1910900F001B3B43 /* MRChan */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C5EBFE0019109010001B3B43 /* Build configuration list for PBXNativeTarget "MRChan" */;
+			buildPhases = (
+				C5EBFDD81910900F001B3B43 /* Sources */,
+				C5EBFDD91910900F001B3B43 /* Frameworks */,
+				C5EBFDDA1910900F001B3B43 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MRChan;
+			productName = MRChan;
+			productReference = C5EBFDDC1910900F001B3B43 /* libMRChan.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		C5EBFDEE19109010001B3B43 /* MRChanTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C5EBFE0319109010001B3B43 /* Build configuration list for PBXNativeTarget "MRChanTests" */;
+			buildPhases = (
+				C5EBFDEB19109010001B3B43 /* Sources */,
+				C5EBFDEC19109010001B3B43 /* Frameworks */,
+				C5EBFDED19109010001B3B43 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C5EBFDF419109010001B3B43 /* PBXTargetDependency */,
+			);
+			name = MRChanTests;
+			productName = MRChanTests;
+			productReference = C5EBFDEF19109010001B3B43 /* MRChanTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C5EBFDD41910900F001B3B43 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "Mathew Reny";
+			};
+			buildConfigurationList = C5EBFDD71910900F001B3B43 /* Build configuration list for PBXProject "MRChan" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C5EBFDD31910900F001B3B43;
+			productRefGroup = C5EBFDDD1910900F001B3B43 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C5EBFDDB1910900F001B3B43 /* MRChan */,
+				C5EBFDEE19109010001B3B43 /* MRChanTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C5EBFDED19109010001B3B43 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C5EBFDFB19109010001B3B43 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C5EBFDD81910900F001B3B43 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C5EBFDEA1910900F001B3B43 /* MRChan.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C5EBFDEB19109010001B3B43 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C5EBFDFD19109010001B3B43 /* MRChanTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C5EBFDF419109010001B3B43 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C5EBFDDB1910900F001B3B43 /* MRChan */;
+			targetProxy = C5EBFDF319109010001B3B43 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C5EBFDF919109010001B3B43 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C5EBFDFA19109010001B3B43 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C5EBFDFE19109010001B3B43 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		C5EBFDFF19109010001B3B43 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		C5EBFE0119109010001B3B43 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MRChan/MRChan-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		C5EBFE0219109010001B3B43 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MRChan/MRChan-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		C5EBFE0419109010001B3B43 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MRChan/MRChan-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "MRChanTests/MRChanTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		C5EBFE0519109010001B3B43 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MRChan/MRChan-Prefix.pch";
+				INFOPLIST_FILE = "MRChanTests/MRChanTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C5EBFDD71910900F001B3B43 /* Build configuration list for PBXProject "MRChan" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C5EBFDFE19109010001B3B43 /* Debug */,
+				C5EBFDFF19109010001B3B43 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C5EBFE0019109010001B3B43 /* Build configuration list for PBXNativeTarget "MRChan" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C5EBFE0119109010001B3B43 /* Debug */,
+				C5EBFE0219109010001B3B43 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C5EBFE0319109010001B3B43 /* Build configuration list for PBXNativeTarget "MRChanTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C5EBFE0419109010001B3B43 /* Debug */,
+				C5EBFE0519109010001B3B43 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C5EBFDD41910900F001B3B43 /* Project object */;
+}
