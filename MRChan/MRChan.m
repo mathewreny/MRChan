@@ -32,11 +32,11 @@
 {
     id __strong *_objects; // The ring buffer in buffered channel.
     
-#define _buffered (_ints[0] != 0)
-#define _buff_sz _ints[0]
-#define _pos _ints[1]
-#define _next _ints[2]
-    int *_ints; // Allows for smallest footprint since unbuffered chans do not use _pos or _next.
+#define _buffered (_uints[0] != 0)
+#define _buff_sz _uints[0]
+#define _pos _uints[1]
+#define _next _uints[2]
+    uint *_uints; // Allows for smallest footprint since unbuffered chans do not use _pos or _next.
 #define BUFFERED_INTS_ARRAY_SIZE 3
 #define UNBUFFERED_INTS_ARRAY_SIZE 1
     
@@ -53,7 +53,7 @@
 - (void)dealloc
 {
     free(_objects);
-    free(_ints);
+    free(_uints);
 }
 
 - (instancetype)initWithSize:(NSUInteger)size
@@ -63,8 +63,8 @@
         if (size > 0)
         {
             // Make a buffered channel.
-            _ints = calloc(BUFFERED_INTS_ARRAY_SIZE, sizeof(int));
-            _buff_sz = (int)size;
+            _uints = calloc(BUFFERED_INTS_ARRAY_SIZE, sizeof(int));
+            _buff_sz = (uint)size;
             _objects = (__strong id *)calloc(_buff_sz, sizeof(id));
             _sem_full = dispatch_semaphore_create((long)_buff_sz);
             _sem_empty = dispatch_semaphore_create(0);
@@ -72,7 +72,7 @@
         else
         {
             // Make an unbuffered channel.
-            _ints = calloc(UNBUFFERED_INTS_ARRAY_SIZE, sizeof(int));
+            _uints = calloc(UNBUFFERED_INTS_ARRAY_SIZE, sizeof(int));
             _objects = (__strong id *)calloc(1, sizeof(id));
             _sem_sent = dispatch_semaphore_create(0);
             _sem_received = dispatch_semaphore_create(0);
