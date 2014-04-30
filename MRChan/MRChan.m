@@ -37,8 +37,8 @@
 #define _pos _uints[1]
 #define _next _uints[2]
     uint *_uints; // Allows for smallest footprint since unbuffered chans do not use _pos or _next.
-#define BUFFERED_INTS_ARRAY_SIZE 3
-#define UNBUFFERED_INTS_ARRAY_SIZE 1
+#define BUFFERED_UINTS_ARRAY_SIZE 3
+#define UNBUFFERED_UINTS_ARRAY_SIZE 1
     
 #define _sem_full  _sem_a
 #define _sem_empty _sem_b
@@ -63,7 +63,7 @@
         if (size > 0)
         {
             // Make a buffered channel.
-            _uints = calloc(BUFFERED_INTS_ARRAY_SIZE, sizeof(int));
+            _uints = calloc(BUFFERED_UINTS_ARRAY_SIZE, sizeof(int));
             _buff_sz = (uint)size;
             _objects = (__strong id *)calloc(_buff_sz, sizeof(id));
             _sem_full = dispatch_semaphore_create((long)_buff_sz);
@@ -72,7 +72,7 @@
         else
         {
             // Make an unbuffered channel.
-            _uints = calloc(UNBUFFERED_INTS_ARRAY_SIZE, sizeof(int));
+            _uints = calloc(UNBUFFERED_UINTS_ARRAY_SIZE, sizeof(int));
             _objects = (__strong id *)calloc(1, sizeof(id));
             _sem_sent = dispatch_semaphore_create(0);
             _sem_received = dispatch_semaphore_create(0);
