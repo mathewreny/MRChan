@@ -61,9 +61,30 @@
  */
 - (BOOL)tryReceive:(id *)object;
 
+/**
+ This block-type conveniently wraps the code to run after successful selection and returns whether the case was selected.
+ */
 typedef BOOL (^SelectCase)();
+
+/**
+ Select case that is selectable only when the channel is ready to send. Run the block after sending the object.
+ */
 - (SelectCase)selSend:(id)object block:(void (^)())block;
+
+/**
+ Select case that is selectable only when the channel is ready to receive. Run the block after receiving the object.
+ */
 - (SelectCase)selReceive:(void (^)(id b_object))block;
+
+/**
+ The select statement takes an array of select cases.  This method waits until one of the select cases are ready, the 
+ select statement then executes the block associated with the selected case.
+ */
 + (void)sel:(NSArray *)cases;
+
+/**
+ This select statement will run one of the select cases if able, otherwise it runs the default block provided.
+ */
++ (void)sel:(NSArray *)cases default:(void (^)())block;
 
 @end

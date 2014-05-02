@@ -262,11 +262,11 @@
 
 + (void)sel:(NSArray *)cases
 {
-    // Shuffle the array to acheive pseudorandomness.
     NSUInteger count = [cases count];
     
     while (1)
     {
+        // Shuffle the array to acheive pseudorandomness.
         NSMutableArray *randomized = [NSMutableArray arrayWithArray:cases];
         for (NSUInteger i = 0; i < count; i++)
         {
@@ -289,9 +289,9 @@
 
 + (void)sel:(NSArray *)cases default:(void (^)())block
 {
-    // Shuffle the array to acheive pseudorandomness.
     NSUInteger count = [cases count];
     
+    // Shuffle the array to acheive pseudorandomness.
     NSMutableArray *randomized = [NSMutableArray arrayWithArray:cases];
     for (NSUInteger i = 0; i < count; i++)
     {

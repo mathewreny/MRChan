@@ -50,23 +50,17 @@
 {
     MRChan *chan = [MRChan make];
     const uint sample_size = 1000;
-    const uint max_threads = 10;
-    __block BOOL passed = true;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Should randomly send 1 and 0 to the channel due to the properties of a channel.
         while(1)
         {
-            // Should randomly send 1 and 0 to the channel due to the properties of a channel.
             [MRChan sel:@[[chan selSend:@1 block:nil], [chan selSend:@0 block:nil]]];
         }
     });
     
     NSNumber *rec;
     uint32 *random = calloc(sample_size, sizeof(uint32));
-    
-    dispatch_semaphore_t limiter = dispatch_semaphore_create(max_threads);
-    dispatch_semaphore_t started = dispatch_semaphore_create(0);
-    
     
     for (int i = 0; i < sample_size; i++)
     {
@@ -76,24 +70,53 @@
             
             random[i] |= rec.unsignedIntValue << j;
         }
-        dispatch_semaphore_wait(limiter, DISPATCH_TIME_FOREVER);
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            uint32 vali = random[i];
-            dispatch_semaphore_signal(started);
-            NSLog(@"Randomly Generated Number: %d", vali);
-            for (int j = 0; j<i; j++)
-            {
-                if (random[j] == vali)
-                {
-                    passed = false;
-                }
-            }
-            dispatch_semaphore_signal(limiter);
-        });
-        dispatch_semaphore_wait(started, DISPATCH_TIME_FOREVER);
+        
+        uint32 vali = random[i];
+        NSLog(@"Randomly Generated Number: %d", vali);
+        for (int j = 0; j<i; j++)
+        {
+            XCTAssert(vali != random[j]);
+        }
     }
     free(random);
-    XCTAssert(passed);
+}
+
+/**
+ Inspired by Rob Pike's talks.golang.org/2012/concurrency.slide#39
+ */
+- (void)testDaisyChain
+{
+    const int n = 10000;
+    MRChan *left = [MRChan make];
+    MRChan *right;
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [left send:@1];
+    });
+    
+    for (int i = 0; i<n; i++)
+    {
+        //dispatch_semaphore_wait(sem_protect, DISPATCH_TIME_FOREVER);
+        NSNumber *rec;
+        [left receive:&rec];
+        if ((i % (n/10)) == 0)
+        {
+            // Log every "n/10" loops.
+            NSLog(@"i = %d Received %d", i, rec.intValue);
+        }
+        right = nil;
+        right = [MRChan make];
+        left = right;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSNumber *sum = [NSNumber numberWithInteger:([rec intValue] + 1)];
+            [right send:sum];
+        });
+    }
+    
+    NSNumber *total;
+    [left receive:&total];
+    NSLog(@"Total was %@", total);
+    XCTAssert((total.intValue == n+1), @"Incorrect total %d", total.intValue);
 }
 
 - (void)testSelectStatement2
@@ -330,49 +353,6 @@
     [self pseudoSelectStatement1:[MRChan make] ch2:[MRChan make] ch3:[MRChan make]];
     [self pseudoSelectStatement1:[MRChan make:1] ch2:[MRChan make:1] ch3:[MRChan make:1]];
 }
-
-/**************************************************************************************************
- Inspired by talks.golang.org/2012/concurrency.slide#39
- */
-- (void)testDaisyChain
-{
-    const int p = 4;
-    int n = pow(10,p);
-    
-    MRChan *left = [MRChan make];
-    MRChan *right;
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [left send:@1];
-    });
-    
-    dispatch_semaphore_t sem_protect = dispatch_semaphore_create(1);
-    for (int i = 0; i<n; i++)
-    {
-        dispatch_semaphore_wait(sem_protect, DISPATCH_TIME_FOREVER);
-        NSNumber *rec;
-        [left receive:&rec];
-        if ((i % (n/10)) == 0)
-        {
-            NSLog(@"i = %d Received %d", i, rec.intValue);
-        }
-        right = nil;
-        right = [MRChan make];
-        left = right;
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NSNumber *sum = [NSNumber numberWithInteger:([rec intValue] + 1)];
-            dispatch_semaphore_signal(sem_protect);
-            [right send:sum];
-        });
-    }
-    
-    NSNumber *total;
-    [left receive:&total];
-    NSLog(@"Total was %@", total);
-    XCTAssert((total.intValue == n+1), @"Incorrect total %d", total.intValue);
-}
-//*************************************************************************************************
-
 
 - (void)testChannelAsyncCalls
 {
