@@ -63,7 +63,7 @@
         if (size > 0)
         {
             // Make a buffered channel.
-            _uints = calloc(BUFFERED_UINTS_ARRAY_SIZE, sizeof(int));
+            _uints = calloc(BUFFERED_UINTS_ARRAY_SIZE, sizeof(uint));
             _buff_sz = (uint)size;
             _objects = (__strong id *)calloc(_buff_sz, sizeof(id));
             _sem_full = dispatch_semaphore_create((long)_buff_sz);
@@ -72,7 +72,7 @@
         else
         {
             // Make an unbuffered channel.
-            _uints = calloc(UNBUFFERED_UINTS_ARRAY_SIZE, sizeof(int));
+            _uints = calloc(UNBUFFERED_UINTS_ARRAY_SIZE, sizeof(uint));
             _objects = (__strong id *)calloc(1, sizeof(id));
             _sem_sent = dispatch_semaphore_create(0);
             _sem_received = dispatch_semaphore_create(0);
@@ -84,17 +84,11 @@
     return self;
 }
 
-/**
- Unbuffered channel.
- */
 + (MRChan *)make
 {
     return [[MRChan alloc] initWithSize:0];
 }
 
-/**
- A chan with size 0 is an unbuffered channel.
- */
 + (MRChan *)make:(NSUInteger)size
 {
     return [[MRChan alloc] initWithSize:size];
@@ -235,6 +229,89 @@
     return TRUE;
 }
 
+- (SelectCase)selReceive:(void (^)(id b_object))block
+{
+    return (SelectCase)^{
+        id obj;
+        if ([self tryReceive:&obj])
+        {
+            if (block) block(obj);
+            return TRUE;
+        }
+        else
+        {
+            return FALSE;
+        }
+    };
+}
 
+- (SelectCase)selSend:(id)object block:(void (^)())block
+{
+    return (SelectCase)^{
+        if ([self trySend:object])
+        {
+            if (block) block();
+            return TRUE;
+        }
+        else
+        {
+            return FALSE;
+        }
+    };
+}
+
++ (void)sel:(NSArray *)cases
+{
+    // Shuffle the array to acheive pseudorandomness.
+    NSUInteger count = [cases count];
+    
+    while (1)
+    {
+        NSMutableArray *randomized = [NSMutableArray arrayWithArray:cases];
+        for (NSUInteger i = 0; i < count; i++)
+        {
+            // Select a random element between i and end of array to swap with.
+            NSInteger nElements = count - i;
+            NSInteger n = arc4random_uniform((u_int32_t)nElements) + i;
+            [randomized exchangeObjectAtIndex:i withObjectAtIndex:n];
+        }
+        
+        for (SelectCase c in randomized)
+        {
+            BOOL selected = c();
+            if (selected)
+            {
+                return;
+            }
+        }
+    }
+}
+
++ (void)sel:(NSArray *)cases default:(void (^)())block
+{
+    // Shuffle the array to acheive pseudorandomness.
+    NSUInteger count = [cases count];
+    
+    NSMutableArray *randomized = [NSMutableArray arrayWithArray:cases];
+    for (NSUInteger i = 0; i < count; i++)
+    {
+        // Select a random element between i and end of array to swap with.
+        NSInteger nElements = count - i;
+        NSInteger n = arc4random_uniform((u_int32_t)nElements) + i;
+        [randomized exchangeObjectAtIndex:i withObjectAtIndex:n];
+    }
+    
+    for (SelectCase c in randomized)
+    {
+        BOOL selected = c();
+        if (selected)
+        {
+            return;
+        }
+    }
+    
+    // If we haven't returned, run the default case.
+    if (block) block();
+}
 
 @end

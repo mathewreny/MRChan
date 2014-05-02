@@ -407,6 +407,7 @@
 				C5EBFE0219109010001B3B43 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C5EBFE0319109010001B3B43 /* Build configuration list for PBXNativeTarget "MRChanTests" */ = {
 			isa = XCConfigurationList;
@@ -415,6 +416,7 @@
 				C5EBFE0519109010001B3B43 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

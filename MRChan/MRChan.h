@@ -61,4 +61,9 @@
  */
 - (BOOL)tryReceive:(id *)object;
 
+typedef BOOL (^SelectCase)();
+- (SelectCase)selSend:(id)object block:(void (^)())block;
+- (SelectCase)selReceive:(void (^)(id b_object))block;
++ (void)sel:(NSArray *)cases;
+
 @end

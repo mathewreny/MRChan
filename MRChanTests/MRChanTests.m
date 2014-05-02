@@ -43,6 +43,105 @@
     [super tearDown];
 }
 
+/**
+ Create |sample_size| ammount of 32 bit random numbers using a select statement. Make sure none of the numbers are equal.
+ */
+- (void)testSelectStatement32BitPseudorandomness1
+{
+    MRChan *chan = [MRChan make];
+    const uint sample_size = 1000;
+    const uint max_threads = 10;
+    __block BOOL passed = true;
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        while(1)
+        {
+            // Should randomly send 1 and 0 to the channel due to the properties of a channel.
+            [MRChan sel:@[[chan selSend:@1 block:nil], [chan selSend:@0 block:nil]]];
+        }
+    });
+    
+    NSNumber *rec;
+    uint32 *random = calloc(sample_size, sizeof(uint32));
+    
+    dispatch_semaphore_t limiter = dispatch_semaphore_create(max_threads);
+    dispatch_semaphore_t started = dispatch_semaphore_create(0);
+    
+    
+    for (int i = 0; i < sample_size; i++)
+    {
+        for (int j = 0; j<32; j++)
+        {
+            [chan receive:&rec];
+            
+            random[i] |= rec.unsignedIntValue << j;
+        }
+        dispatch_semaphore_wait(limiter, DISPATCH_TIME_FOREVER);
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            uint32 vali = random[i];
+            dispatch_semaphore_signal(started);
+            NSLog(@"Randomly Generated Number: %d", vali);
+            for (int j = 0; j<i; j++)
+            {
+                if (random[j] == vali)
+                {
+                    passed = false;
+                }
+            }
+            dispatch_semaphore_signal(limiter);
+        });
+        dispatch_semaphore_wait(started, DISPATCH_TIME_FOREVER);
+    }
+    free(random);
+    XCTAssert(passed);
+}
+
+- (void)testSelectStatement2
+{
+    MRChan *ch1 = [MRChan make];
+    MRChan *timeout = [MRChan make];
+    __block BOOL ran = false;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        sleep(2);
+        [timeout send:@1];
+    });
+    
+    [MRChan
+     sel:@[[ch1 selReceive:^(id b_object) {
+                XCTFail(@"This shouldn't run");
+            }],
+           [ch1 selSend:@0 block:^{
+                XCTFail(@"This shouldn't run");
+            }],
+           [timeout selReceive:^(NSNumber *timedout) {
+                ran = [timedout boolValue];
+            }],
+           ]];
+    
+    XCTAssert(ran);
+}
+
+- (void)testSelectStatement1
+{
+    MRChan *ch1 = [MRChan make:1];
+    
+    
+    NSNumber *__block total;
+    for (int i = 0; i < 6; i++)
+    {
+        [MRChan
+         sel:@[[ch1 selReceive:^(NSNumber *obj){
+                    total = [NSNumber numberWithInt:obj.intValue+total.intValue];
+                    NSLog(@"Got %d", obj.intValue);
+                }],
+               [ch1 selSend:@1 block:^{
+                    NSLog(@"Sent 1");
+                }]
+               ]];
+    }
+    
+    XCTAssert(total.intValue == 3, @"The total was %d", total.intValue);
+}
 
 - (void)testChannelSendAsync
 {
@@ -128,13 +227,13 @@
     
     [bfch receive:&hello]; NSLog(@"%@", hello);
     XCTAssert([hello isEqualToString:@"Hello"]);
-    [bfch receive:&world];
+    [bfch receive:&world]; NSLog(@"%@", world);
     XCTAssert([world isEqualToString:@"World"]);
-    [bfch receive:&this];
+    [bfch receive:&this]; NSLog(@"%@", this);
     XCTAssert([this isEqualToString:@"This"]);
     [bfch receive:&is]; NSLog(@"%@", is);
     XCTAssert([is isEqualToString:@"Is"]);
-    [bfch receive:&mat];
+    [bfch receive:&mat]; NSLog(@"%@", mat);
     XCTAssert([mat isEqualToString:@"Mat"]);
     [bfch receive:&over]; NSLog(@"%@", over);
     XCTAssert([over isEqualToString:@"Overwriting"]);
@@ -164,24 +263,25 @@
 
 - (void)testChannelBuffOneTheNumberSize
 {
-    NSString *rec;
     MRChan *ch = [MRChan make:1];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         for (int i = 0; i<100000; i++)
         {
-            [ch send:@"hello"];
+            NSString *str = @"hello";
+            [ch send:str];
         }
     });
     
     for (int j = 0; j<100000; j++)
     {
+        NSString *rec;
         [ch receive:&rec];
         XCTAssert([rec isEqualToString:@"hello"]);
     }
 }
 
-- (void)selectStatement1:(MRChan *)ch1 ch2:(MRChan *)ch2 ch3:(MRChan *)ch3
+- (void)pseudoSelectStatement1:(MRChan *)ch1 ch2:(MRChan *)ch2 ch3:(MRChan *)ch3
 {
     NSNumber *rec, *__block total;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -225,10 +325,10 @@
     }
 }
 
-- (void)testSelectStatement1
+- (void)testPseudoSelectStatement1
 {
-    [self selectStatement1:[MRChan make] ch2:[MRChan make] ch3:[MRChan make]];
-    [self selectStatement1:[MRChan make:1] ch2:[MRChan make:1] ch3:[MRChan make:1]];
+    [self pseudoSelectStatement1:[MRChan make] ch2:[MRChan make] ch3:[MRChan make]];
+    [self pseudoSelectStatement1:[MRChan make:1] ch2:[MRChan make:1] ch3:[MRChan make:1]];
 }
 
 /**************************************************************************************************
