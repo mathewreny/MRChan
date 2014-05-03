@@ -8,7 +8,7 @@ How to create a channel.
     MRChan *uchannel = [[MRChan alloc] init];           // unbuffered channel.
     MRChan *bchannel = [[MRChan alloc] initWithSize:5]; // buffered channel
 
-Sending to a channel blocks (waits) until there is a value to receive.
+Sending/receiving to/from a channel blocks (waits) until the action can occur.
 
     MRChan *channel = [[MRChan alloc] init];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
