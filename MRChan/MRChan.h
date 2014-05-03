@@ -30,12 +30,12 @@
 /**
  Create an unbuffered channel.
  */
-+ (MRChan *)make;
+- (instancetype)init;
 
 /**
  Create a buffered channel.  If (|size| == 0) then the channel is unbuffered.
  */
-+ (MRChan *)make:(NSUInteger)size;
+- (instancetype)initWithSize:(NSUInteger)size;
 
 /**
  for buffered channels: wait until the buffer is not full.
@@ -69,12 +69,12 @@ typedef BOOL (^SelectCase)();
 /**
  Select case that is selectable only when the channel is ready to send. Run the block after sending the object.
  */
-- (SelectCase)selSend:(id)object block:(void (^)())block;
+- (SelectCase)caseSend:(id)object block:(void (^)())block;
 
 /**
  Select case that is selectable only when the channel is ready to receive. Run the block after receiving the object.
  */
-- (SelectCase)selReceive:(void (^)(id b_object))block;
+- (SelectCase)caseReceive:(void (^)(id b_object))block;
 
 /**
  The select statement takes an array of select cases.  This method waits until one of the select cases are ready, the 

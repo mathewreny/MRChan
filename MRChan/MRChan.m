@@ -56,6 +56,13 @@
     free(_uints);
 }
 
+
+- (instancetype)init
+{
+    return [self initWithSize:0];
+}
+
+
 - (instancetype)initWithSize:(NSUInteger)size
 {
     self = [super init];
@@ -82,16 +89,6 @@
         _sem_protected_receive = dispatch_semaphore_create(1);
     }
     return self;
-}
-
-+ (MRChan *)make
-{
-    return [[MRChan alloc] initWithSize:0];
-}
-
-+ (MRChan *)make:(NSUInteger)size
-{
-    return [[MRChan alloc] initWithSize:size];
 }
 
 - (void)send:(id)object
@@ -229,7 +226,7 @@
     return TRUE;
 }
 
-- (SelectCase)selReceive:(void (^)(id b_object))block
+- (SelectCase)caseReceive:(void (^)(id b_object))block
 {
     return (SelectCase)^{
         id obj;
@@ -245,7 +242,7 @@
     };
 }
 
-- (SelectCase)selSend:(id)object block:(void (^)())block
+- (SelectCase)caseSend:(id)object block:(void (^)())block
 {
     return (SelectCase)^{
         if ([self trySend:object])

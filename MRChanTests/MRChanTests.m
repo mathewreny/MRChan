@@ -46,11 +46,11 @@
 
 - (void)testSelectPseudorandomsNotAllZeroOrAllOnes
 {
-    MRChan *ch = [MRChan make];
+    MRChan *ch = [[MRChan alloc] init];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        SelectCase send0 = [ch selSend:@0 block:nil];
-        SelectCase send1 = [ch selSend:@1 block:nil];
+        SelectCase send0 = [ch caseSend:@0 block:nil];
+        SelectCase send1 = [ch caseSend:@1 block:nil];
         while (1)
         {
             [MRChan select:send0, send1, nil];
@@ -82,13 +82,13 @@
  */
 - (void)testSelectStatement32BitPseudorandomness1
 {
-    MRChan *chan = [MRChan make:256];
+    MRChan *chan = [[MRChan alloc] initWithSize:256];
     const uint sample_size = 1000;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Should randomly send 1 and 0 to the channel due to the properties of a channel.
-        SelectCase send0 = [chan selSend:@0 block:nil];
-        SelectCase send1 = [chan selSend:@1 block:nil];
+        SelectCase send0 = [chan caseSend:@0 block:nil];
+        SelectCase send1 = [chan caseSend:@1 block:nil];
         while (1)
         {
             [MRChan select:send0, send1, nil];
@@ -123,7 +123,7 @@
 - (void)testDaisyChain
 {
     const int n = 10000;
-    MRChan *left = [MRChan make];
+    MRChan *left = [[MRChan alloc] init];
     MRChan *right;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -141,7 +141,7 @@
             NSLog(@"i = %d Received %d", i, rec.intValue);
         }
         right = nil;
-        right = [MRChan make];
+        right = [[MRChan alloc] init];
         left = right;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSNumber *sum = [NSNumber numberWithInteger:([rec intValue] + 1)];
@@ -157,23 +157,23 @@
 
 - (void)testSelectStatement2
 {
-    MRChan *ch1 = [MRChan make];
-    MRChan *timeout = [MRChan make];
+    MRChan *ch1 = [[MRChan alloc] init];
+    MRChan *timeout = [[MRChan alloc] init];
     __block BOOL ran = false;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         sleep(1);
         [timeout send:@1];
     });
     
-    [MRChan select:[ch1 selReceive:^(id b_object)
+    [MRChan select:[ch1 caseReceive:^(id b_object)
                         {
                             XCTFail(@"This shouldn't run");
                         }],
-                       [ch1 selSend:@0 block:^
+                       [ch1 caseSend:@0 block:^
                         {
                             XCTFail(@"This shouldn't run");
                         }],
-                       [timeout selReceive:^(NSNumber *timedout)
+                       [timeout caseReceive:^(NSNumber *timedout)
                         {
                             ran = [timedout boolValue];
                         }],
@@ -184,18 +184,18 @@
 
 - (void)testSelectStatement1
 {
-    MRChan *ch1 = [MRChan make:1];
+    MRChan *ch1 = [[MRChan alloc] initWithSize:1];
     
     
     NSNumber *__block total;
     for (int i = 0; i < 6; i++)
     {
         [MRChan select:
-        [ch1 selReceive:
+        [ch1 caseReceive:
         ^(NSNumber *obj){
             total = [NSNumber numberWithInt:obj.intValue+total.intValue];
             NSLog(@"Got %d", obj.intValue); }],
-        [ch1 selSend:@1 block:
+        [ch1 caseSend:@1 block:
         ^{
             NSLog(@"Sent 1");
         }],
@@ -207,7 +207,7 @@
 
 - (void)testChannelSendAsync
 {
-    MRChan *ch = [MRChan make];
+    MRChan *ch = [[MRChan alloc] init];
     NSString *received;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -221,7 +221,7 @@
 
 - (void)testChannelReceiveAsync
 {
-    MRChan *ch = [MRChan make];
+    MRChan *ch = [[MRChan alloc] init];
     __block NSString *received;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -235,7 +235,7 @@
 
 - (void)testBuffChan
 {
-    MRChan *bfch = [MRChan make:5];
+    MRChan *bfch = [[MRChan alloc] initWithSize:5];
     
     NSString *hello, *world, *this, *is, *mat;
     
@@ -272,7 +272,7 @@
 
 - (void)testTooManySends
 {
-    MRChan *bfch = [MRChan make:5];
+    MRChan *bfch = [[MRChan alloc] initWithSize:5];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [bfch send:@"Hello"];
@@ -305,7 +305,7 @@
 
 - (void)testUnbufferedChannels
 {
-    MRChan *ch = [MRChan make];
+    MRChan *ch = [[MRChan alloc] init];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         for (int i = 0; i<10000; i++)
@@ -325,7 +325,7 @@
 
 - (void)testChannelBuffOneTheNumberSize
 {
-    MRChan *ch = [MRChan make:1];
+    MRChan *ch = [[MRChan alloc] initWithSize:1];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         for (int i = 0; i<100000; i++)
@@ -389,13 +389,17 @@
 
 - (void)testPseudoSelectStatement1
 {
-    [self pseudoSelectStatement1:[MRChan make] ch2:[MRChan make] ch3:[MRChan make]];
-    [self pseudoSelectStatement1:[MRChan make:1] ch2:[MRChan make:1] ch3:[MRChan make:1]];
+    [self pseudoSelectStatement1:[[MRChan alloc] init]
+                             ch2:[[MRChan alloc] init]
+                             ch3:[[MRChan alloc] init]];
+    [self pseudoSelectStatement1:[[MRChan alloc] initWithSize:1]
+                             ch2:[[MRChan alloc] initWithSize:1]
+                             ch3:[[MRChan alloc] initWithSize:1]];
 }
 
 - (void)testChannelAsyncCalls
 {
-    MRChan *ch = [MRChan make:2];
+    MRChan *ch = [[MRChan alloc] initWithSize:2];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [ch send:@"One"];
