@@ -43,19 +43,55 @@
     [super tearDown];
 }
 
-/**
- Create |sample_size| ammount of 32 bit random numbers using a select statement. Make sure none of the numbers are equal.
+
+- (void)testSelectPseudorandomsNotAllZeroOrAllOnes
+{
+    MRChan *ch = [MRChan make];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        SelectCase send0 = [ch selSend:@0 block:nil];
+        SelectCase send1 = [ch selSend:@1 block:nil];
+        while (1)
+        {
+            [MRChan select:send0, send1, nil];
+        }
+    });
+    
+    for (int i = 0; i<1000; i++)
+    {
+        uint16 num = 0;
+        for (int j = 0; j < 16; j++)
+        {
+            NSNumber *number;
+            [ch receive:&number];
+            num = (num << 1) | number.intValue;
+        }
+        XCTAssert(num != 0);    // Not all 0s
+        XCTAssert(num != 0xFF); // Not all 1s
+        if (i%100 == 0)
+        {
+            NSLog(@"Generated Sample: %d", num);
+        }
+    }
+}
+
+/** FAILING THIS TEST IS EXPECTED EVERY ONCE IN A WHILE
+ Create |sample_size| ammount of 32 bit random numbers using a select statement. 
+ 
+ Make sure none of the numbers are equal.
  */
 - (void)testSelectStatement32BitPseudorandomness1
 {
-    MRChan *chan = [MRChan make];
+    MRChan *chan = [MRChan make:256];
     const uint sample_size = 1000;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Should randomly send 1 and 0 to the channel due to the properties of a channel.
-        while(1)
+        SelectCase send0 = [chan selSend:@0 block:nil];
+        SelectCase send1 = [chan selSend:@1 block:nil];
+        while (1)
         {
-            [MRChan sel:@[[chan selSend:@1 block:nil], [chan selSend:@0 block:nil]]];
+            [MRChan select:send0, send1, nil];
         }
     });
     
@@ -125,21 +161,23 @@
     MRChan *timeout = [MRChan make];
     __block BOOL ran = false;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        sleep(2);
+        sleep(1);
         [timeout send:@1];
     });
     
-    [MRChan
-     sel:@[[ch1 selReceive:^(id b_object) {
-                XCTFail(@"This shouldn't run");
-            }],
-           [ch1 selSend:@0 block:^{
-                XCTFail(@"This shouldn't run");
-            }],
-           [timeout selReceive:^(NSNumber *timedout) {
-                ran = [timedout boolValue];
-            }],
-           ]];
+    [MRChan select:[ch1 selReceive:^(id b_object)
+                        {
+                            XCTFail(@"This shouldn't run");
+                        }],
+                       [ch1 selSend:@0 block:^
+                        {
+                            XCTFail(@"This shouldn't run");
+                        }],
+                       [timeout selReceive:^(NSNumber *timedout)
+                        {
+                            ran = [timedout boolValue];
+                        }],
+                        nil];
     
     XCTAssert(ran);
 }
@@ -152,15 +190,16 @@
     NSNumber *__block total;
     for (int i = 0; i < 6; i++)
     {
-        [MRChan
-         sel:@[[ch1 selReceive:^(NSNumber *obj){
-                    total = [NSNumber numberWithInt:obj.intValue+total.intValue];
-                    NSLog(@"Got %d", obj.intValue);
-                }],
-               [ch1 selSend:@1 block:^{
-                    NSLog(@"Sent 1");
-                }]
-               ]];
+        [MRChan select:
+        [ch1 selReceive:
+        ^(NSNumber *obj){
+            total = [NSNumber numberWithInt:obj.intValue+total.intValue];
+            NSLog(@"Got %d", obj.intValue); }],
+        [ch1 selSend:@1 block:
+        ^{
+            NSLog(@"Sent 1");
+        }],
+        nil];
     }
     
     XCTAssert(total.intValue == 3, @"The total was %d", total.intValue);

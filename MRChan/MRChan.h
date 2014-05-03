@@ -80,11 +80,11 @@ typedef BOOL (^SelectCase)();
  The select statement takes an array of select cases.  This method waits until one of the select cases are ready, the 
  select statement then executes the block associated with the selected case.
  */
-+ (void)sel:(NSArray *)cases;
++ (void)select:(SelectCase)firstCase, ...;
 
 /**
  This select statement will run one of the select cases if able, otherwise it runs the default block provided.
  */
-+ (void)sel:(NSArray *)cases default:(void (^)())block;
++ (void)selectDefault:(void (^)())block withCases:(SelectCase)firstCase, ...;
 
 @end

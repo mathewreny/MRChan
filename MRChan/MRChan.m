@@ -260,14 +260,27 @@
     };
 }
 
-+ (void)sel:(NSArray *)cases
+
++ (void)select:(SelectCase)firstCase, ...
 {
-    NSUInteger count = [cases count];
+    // Convert the va list to an NSMutableArray.
+    NSMutableArray *a = [[NSMutableArray alloc] initWithObjects:firstCase, nil];
+    SelectCase c;
+    va_list cases;
+    va_start(cases, firstCase);
+    while ((c = va_arg(cases, SelectCase)))
+    {
+        [a addObject:c];
+    }
+    va_end(cases);
+    
+    NSUInteger count = [a count];
     
     while (1)
     {
         // Shuffle the array to acheive pseudorandomness.
-        NSMutableArray *randomized = [NSMutableArray arrayWithArray:cases];
+        NSMutableArray *randomized = [NSMutableArray arrayWithArray:a];
+        
         for (NSUInteger i = 0; i < count; i++)
         {
             // Select a random element between i and end of array to swap with.
@@ -287,12 +300,22 @@
     }
 }
 
-+ (void)sel:(NSArray *)cases default:(void (^)())block
++ (void)selectDefault:(void (^)())block withCases:(SelectCase)firstCase, ...
 {
-    NSUInteger count = [cases count];
+    // Convert the va list to an NSMutableArray
+    NSMutableArray *randomized = [[NSMutableArray alloc] initWithObjects:firstCase, nil];
+    SelectCase c;
+    va_list cases;
+    va_start(cases, firstCase);
+    while ((c = va_arg(cases, SelectCase)))
+    {
+        [randomized addObject:c];
+    }
+    va_end(cases);
+    
+    NSUInteger count = [randomized count];
     
     // Shuffle the array to acheive pseudorandomness.
-    NSMutableArray *randomized = [NSMutableArray arrayWithArray:cases];
     for (NSUInteger i = 0; i < count; i++)
     {
         // Select a random element between i and end of array to swap with.
