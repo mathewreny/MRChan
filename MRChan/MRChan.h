@@ -22,7 +22,6 @@
  SOFTWARE.
  */
 
-
 #import <Foundation/Foundation.h>
 
 @interface MRChan : NSObject

@@ -337,6 +337,7 @@
 		C5EBFE0119109010001B3B43 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_X86_VECTOR_INSTRUCTIONS = default;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MRChan/MRChan-Prefix.pch";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -346,6 +347,7 @@
 		C5EBFE0219109010001B3B43 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_X86_VECTOR_INSTRUCTIONS = default;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MRChan/MRChan-Prefix.pch";
 				PRODUCT_NAME = "$(TARGET_NAME)";

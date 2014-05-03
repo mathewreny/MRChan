@@ -73,7 +73,12 @@
             _uints = calloc(BUFFERED_UINTS_ARRAY_SIZE, sizeof(uint));
             _buff_sz = (uint)size;
             _objects = (__strong id *)calloc(_buff_sz, sizeof(id));
-            _sem_full = dispatch_semaphore_create((long)_buff_sz);
+            _sem_full = dispatch_semaphore_create(0);
+            uint countdown = _buff_sz; // LLVM Issue: Semaphores must be created at 0 *then* signaled.
+            while (countdown--)
+            {
+                dispatch_semaphore_signal(_sem_full);
+            }
             _sem_empty = dispatch_semaphore_create(0);
         }
         else
@@ -85,8 +90,10 @@
             _sem_received = dispatch_semaphore_create(0);
         }
         
-        _sem_protected_send = dispatch_semaphore_create(1);
-        _sem_protected_receive = dispatch_semaphore_create(1);
+        _sem_protected_send = dispatch_semaphore_create(0); // can't initialize to 1 due to LLVM issue.
+        _sem_protected_receive = dispatch_semaphore_create(0);
+        dispatch_semaphore_signal(_sem_protected_send);
+        dispatch_semaphore_signal(_sem_protected_receive);
     }
     return self;
 }

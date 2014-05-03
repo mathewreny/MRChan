@@ -43,6 +43,25 @@
     [super tearDown];
 }
 
+- (void)testQuitChannel
+{
+    __block BOOL quit = false;
+    MRChan *chan = [[MRChan alloc] initWithSize:1];
+    MRChan *quitChan = [[MRChan alloc] init];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        sleep(1);
+        [quitChan send:@1];
+    });
+    SelectCase receiveStuff = [chan caseReceive:^(NSString *str){ NSLog(@"Received string %@", str);}];
+    SelectCase sendStuff = [chan caseSend:@"World" block:nil];
+    SelectCase quitCase = [quitChan caseReceive:^(id di){
+                                quit = TRUE;
+                           }];
+    while(!quit)
+    {
+        [MRChan select:receiveStuff, sendStuff, quitCase, nil];
+    }
+}
 
 - (void)testSelectPseudorandomsNotAllZeroOrAllOnes
 {
