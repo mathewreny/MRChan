@@ -19,7 +19,7 @@ Sending to a channel blocks (waits) until there is a value to receive.
     [channel receive:&received];
     XCTAssert(received.intValue == 2);
     
-The select method pseudorandomally tests every `SelectCase` until one is ready.
+The select method pseudorandomly tests every `SelectCase` until one is ready.
 
     MRChan *channel = [[MRChan alloc] init];
     // Begin randomally sending 1s and 0s to the channel.
@@ -41,7 +41,7 @@ The select method pseudorandomally tests every `SelectCase` until one is ready.
         }
     }
     
-Select statements can receive and send values.
+Select statements can intermix receive and send cases.
 
     __block BOOL quit = false;
     MRChan *chan = [[MRChan alloc] initWithSize:3]; // Buffered channel of size 3.
