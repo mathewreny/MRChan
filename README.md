@@ -12,7 +12,7 @@ Sending/receiving to/from a channel blocks (waits) until the action can occur.
 
     NSNumber *rec;
     [bchannel send:@1];      // Buffered channels don't wait to send unless full.
-    [bchannel receive:&rec]; //    ""       tVa""      ""   ""  "" receive ""  empty
+    [bchannel receive:&rec]; //    ""       ""      ""   ""  "" receive ""  empty
     XCTAssert(rec.intValue == 1);
     // Unbuffered channels must send/receive through different coroutines.
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -20,7 +20,7 @@ Sending/receiving to/from a channel blocks (waits) until the action can occur.
         [channel send:@2];
     });
     [channel receive:&rec];
-    XCTAssert(received.inlue == 2);
+    XCTAssert(received.intValue == 2);
     
 The select method randomly tests every `SelectCase` until one is ready.
 
@@ -43,7 +43,9 @@ Example: Random number generator.
         }
     }
     
-Select statements can intermix receive and send cases.
+Select statements can intermix receive and send cases. 
+
+Example: Quit channel test.
 
     __block BOOL quit = false;
     MRChan *chan = [[MRChan alloc] initWithSize:3]; // Buffered channel of size 3.
