@@ -3,6 +3,8 @@ MRChan
 
 Objective-c implementation of Golang channels.
 
+#### If you know Objective-C, read MRChan.h instead of the examples. It's well documented and easy to follow!
+
 How to create a channel.
 
     MRChan *channel  = [[MRChan alloc] init];           // unbuffered channel.
