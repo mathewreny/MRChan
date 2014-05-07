@@ -36,7 +36,7 @@
 #define _buff_sz _uints[0]
 #define _pos _uints[1]
 #define _next _uints[2]
-    uint *_uints; // Allows for smallest footprint since unbuffered chans do not use _pos or _next.
+    uint *_uints; // This will change once Buffered and Unbuffered are separate classes.
 #define BUFFERED_UINTS_ARRAY_SIZE 3
 #define UNBUFFERED_UINTS_ARRAY_SIZE 1
     
