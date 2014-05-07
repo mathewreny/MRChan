@@ -3,7 +3,7 @@ MRChan
 
 Objective-c implementation of Golang channels.
 
-#### If you know Objective-C, read MRChan.h instead of the examples. It's well documented and easy to follow!
+### Read [MRChan.h](https://github.com/mathewreny/MRChan/blob/master/MRChan/MRChan.h) before the examples. It's well documented and easy to follow!
 
 How to create a channel.
 
