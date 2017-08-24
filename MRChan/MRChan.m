@@ -172,7 +172,7 @@
     {
         sem_wait(_sem_empty);
         sem_wait(_sem_protected_receive);
-        *object = _objects[_next];
+        if (object) *object = _objects[_next];
         _next = (_next+1)%_buff_sz;
         sem_signal(_sem_protected_receive);
         sem_signal(_sem_full);
@@ -181,7 +181,7 @@
     {
         sem_wait(_sem_protected_receive);
         sem_wait(_sem_sent);
-        *object = _objects[0];
+        if (object) *object = _objects[0];
         sem_signal(_sem_received);
         sem_signal(_sem_protected_receive);
     }
@@ -205,7 +205,7 @@
             return FALSE;
         }
         
-        *object = _objects[_next];
+        if (object) *object = _objects[_next];
         _next = (_next+1)%_buff_sz;
         
         sem_signal(_sem_protected_receive);
@@ -226,7 +226,7 @@
             return FALSE;
         }
         
-        *object = _objects[0];
+        if (object) *object = _objects[0];
         sem_signal(_sem_received);
         sem_signal(_sem_protected_receive);
     }
