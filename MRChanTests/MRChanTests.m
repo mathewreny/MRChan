@@ -43,6 +43,31 @@
     [super tearDown];
 }
 
+- (void)testNilSelectSend
+{
+    __block bool testPassed = false;
+    MRChan *chan = [[MRChan alloc] initWithSize:1];
+    SelectCase sendNil = [chan caseSend:nil block:nil];
+    SelectCase recNil = [chan caseReceive:^(NSObject *obj){
+        testPassed = nil == obj;
+    }];
+    [MRChan select:sendNil, recNil, nil];
+    [MRChan select:sendNil, recNil, nil];
+    XCTAssert(testPassed);
+}
+
+
+- (void)testNilSend
+{
+    MRChan *chan = [[MRChan alloc] initWithSize:1];
+    [chan send:nil];
+    NSString *something = @"I am a string, how are you?";
+    [chan receive:&something];
+    XCTAssert(something == nil);
+}
+
+
+
 - (void)testQuitChannel
 {
     __block BOOL quit = false;
